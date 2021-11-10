@@ -18,12 +18,12 @@ VALUES
     (6,"Sales Manager", "80000", 1),
     (7,"Junior Software Designer", "70000", 3);
 
--- INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
--- VALUES
---     (1,"Jessica" "BanksTest", 2, null),
---     (2,"Tom", "SmithTest", 5, 5),
---     (3,"Cara", "NguyenTest", 7, 4),
---     (4,"Jared", "MiddletonTest", 3, null),
---     (5,"Jasmin", "PatelTest", 6, null),
---     (6,"Heidi", "SvenTest", 4, null),
---     (7,"Daniel", "Wu", 7, 4);
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
+VALUES
+    (1,"Jessica", "BanksTest", 2, null),
+    (2,"Tom", "SmithTest", 5, 1),
+    (3,"Cara", "NguyenTest", 7, 2),
+    (4,"Jared", "MiddletonTest", 3, null),
+    (5,"Jasmin", "PatelTest", 6, null),
+    (6,"Heidi", "SvenTest", 4, null),
+    (7,"Daniel", "Wu", 7, 4);

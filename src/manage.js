@@ -2,7 +2,8 @@ const inquirer = require("inquirer");
 const cTable = require("console.table");
 const startQs = require("./questions.js");
 
-const manage = async (db) => {
+// const manage = async (db) => {
+async function askQ(db) {
   inquirer
     .prompt(startQs)
     .then((answer) => {
@@ -12,19 +13,19 @@ const manage = async (db) => {
           selectEmployees(db);
           break;
         case "Update Employee Role":
-          updateEmployee();
+          updateEmployee(db);
           break;
         case "View all Roles":
-          viewRoles();
+          viewRoles(db);
           break;
         case "Add Role":
-          addRole();
+          addRole(db);
           break;
         case "View all Departments":
-          viewDep();
+          viewDep(db);
           break;
         case "Add Department":
-          addDep();
+          addDep(db);
           break;
         case "Quit":
           prompts.complete();
@@ -38,10 +39,18 @@ const manage = async (db) => {
         console.log("Something else went wrong");
       }
     });
-};
+}
 
 async function selectEmployees(db) {
+  let [rows, fields] = await db.query("SELECT * FROM employee");
+  console.table(rows);
+  askQ(db);
+}
+
+async function viewRoles(db) {
   let [rows, fields] = await db.query("SELECT * FROM employee_role");
   console.table(rows);
+  askQ(db);
 }
-module.exports = manage;
+
+module.exports = askQ;
