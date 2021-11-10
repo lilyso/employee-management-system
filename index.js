@@ -1,10 +1,11 @@
 require("dotenv").config();
-// Import and require mysql2
+const cTable = require("console.table");
+const manage = require("./src/manage.js");
 
 // Connect to database
 async function main() {
   const mysql = require("mysql2");
-  const db = await mysql.createPool(
+  const db = mysql.createPool(
     {
       host: "localhost",
       user: process.env.DB_USER,
@@ -16,14 +17,8 @@ async function main() {
     },
     console.log(`Connected to the employee_db database.`)
   );
-
-  // Query database
-  const createTables = await db.execute(
-    "SOURCE ./db/schema.sql",
-    function (err, results) {
-      console.log(results);
-    }
-  );
+  const promisePool = db.promise();
+  await manage(promisePool);
 }
 
 main();

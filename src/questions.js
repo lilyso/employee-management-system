@@ -1,4 +1,4 @@
-const questions = [
+const startQs = [
   {
     name: "start",
     message: "What would you like to do?",
@@ -16,4 +16,4 @@ const questions = [
   },
 ];
 
-module.exports = questions;
+module.exports = startQs;
