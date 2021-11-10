@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "-": "^0.0.1",
+    "colors": "^1.4.0",
     "console.table": "^0.10.0",
     "dotenv": "^10.0.0",
     "inquirer": "^8.2.0",
