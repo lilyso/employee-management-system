@@ -12,7 +12,7 @@ async function main() {
       password: process.env.DB_PASS,
       database: "employee_db",
       waitForConnections: true,
-      connectionLimit: 50,
+      connectionLimit: 10,
       queueLimit: 0,
     },
     console.log(`Connected to the employee_db database.`)
