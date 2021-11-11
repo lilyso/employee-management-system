@@ -26,4 +26,4 @@ VALUES
     (4,"Jared", "MiddletonTest", 3, null),
     (5,"Jasmin", "PatelTest", 6, null),
     (6,"Heidi", "SvenTest", 4, null),
-    (7,"Daniel", "Wu", 7, 4);
+    (7,"Daniel", "WuTest", 7, 4);

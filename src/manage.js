@@ -42,14 +42,26 @@ async function askQ(db) {
 }
 
 async function selectEmployees(db) {
-  let [rows, fields] = await db.query("SELECT * FROM employee");
-  console.table(rows);
+  let [rows, fields] = await db.query(
+    "SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, department.name AS department, employee_role.salary, CONCAT(manager.first_name,' ',manager.last_name) AS Manager FROM employee employee LEFT JOIN employee manager ON employee.manager_id = manager.id INNER JOIN employee_role ON employee.role_id=employee_role.id INNER JOIN department ON employee_role.department_id=department.id"
+  );
+  console.table("\r", rows);
   askQ(db);
 }
 
+// async function updateEmployee
+
 async function viewRoles(db) {
-  let [rows, fields] = await db.query("SELECT * FROM employee_role");
-  console.table(rows);
+  let [rows, fields] = await db.query(
+    "SELECT employee_role.id, employee_role.title,department.name, employee_role.salary FROM employee_role INNER JOIN department ON employee_role.department_id = department.id"
+  );
+  console.table("\r", rows);
+  askQ(db);
+}
+
+async function viewDep(db) {
+  let [rows, fields] = await db.query("SELECT * FROM department");
+  console.table("\r", rows);
   askQ(db);
 }
 
