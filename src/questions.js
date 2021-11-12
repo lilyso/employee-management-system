@@ -19,7 +19,7 @@ const startQs = [
   },
 ];
 
-const addEmployeeQs = (roles) => [
+const addEmployeeQs = ({ roles, managers }) => [
   {
     name: "fname",
     message: "Enter first name of employee...",
@@ -54,9 +54,18 @@ const addEmployeeQs = (roles) => [
   },
   {
     name: "manager",
-    message: "Enter a manager id or leave blank...",
+    message: "Choose a manager",
     type: "list",
-    choices: ["Jessica BankTest", "Jared MiddletonTest"],
+    choices: () => {
+      const managerChoices = [{ name: "No manager", value: "null" }];
+      managers.forEach((manager) => {
+        managerChoices.push({
+          name: manager.first_name + " " + manager.last_name,
+          value: manager.id,
+        });
+      });
+      return managerChoices;
+    },
   },
 ];
 

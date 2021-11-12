@@ -60,12 +60,15 @@ async function selectEmployees(db) {
 
 async function addEmployee(db) {
   let [roles] = await db.query("SELECT id, title FROM employee_role");
-  let getRoleDep = addEmployeeQs(roles);
-  let employeeQs = await inquirer.prompt(getRoleDep).then(async (answer) => {
+  let [managers] = await db.query(
+    "SELECT * FROM employee WHERE manager_id IS null"
+  );
+  let getRoleMan = addEmployeeQs({ roles, managers });
+  let employeeQs = await inquirer.prompt(getRoleMan).then(async (answer) => {
     let addEmployee = await db.query(
-      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.fname}", "${answer.lname}", ${answer.role}, null)`
+      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.fname}", "${answer.lname}", ${answer.role}, ${answer.manager})`
     );
-    console.log(answer);
+    console.log(managers);
     console.log("Employee has been added");
     askQ(db);
   });
