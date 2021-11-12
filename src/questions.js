@@ -48,7 +48,7 @@ const addEmployeeQs = [
     name: "role",
     message: "Enter employee role...",
     type: "list",
-    choices: ["Accountant", "Sales Manager"],
+    choices: ["Accountant", "Marketing Coordinator", "Lead Developer"],
     // validate: (input) => {
     //   if (!input) {
     //     console.log(colors.red("\nPlease enter a role"));
@@ -60,15 +60,36 @@ const addEmployeeQs = [
   {
     name: "manager",
     message: "Enter a manager id or leave blank...",
-    type: "input",
-    validate: (input) => {
-      if (isNaN(input) || null || "") {
-        console.log(colors.red("\nPlease enter a valid number or leave blank"));
-        return false;
-      }
-      return true;
-    },
+    type: "list",
+    choices: ["Jessica BankTest", "Jared MiddletonTest"],
   },
 ];
 
-module.exports = { startQs, addEmployeeQs };
+const addRoleQs = [
+  {
+    name: "title",
+    message: "Enter a role...",
+    type: "input",
+  },
+  {
+    name: "salary",
+    message: "Enter salary...",
+    type: "input",
+  },
+  {
+    name: "department",
+    message: "Choose department...",
+    type: "list",
+    choices: ["Marketing", "Engineering", "Finance"],
+  },
+];
+
+const addDepartmentQs = [
+  {
+    name: "department",
+    message: "Enter department...",
+    type: "input",
+  },
+];
+
+module.exports = { startQs, addEmployeeQs, addRoleQs, addDepartmentQs };

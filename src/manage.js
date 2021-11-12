@@ -1,6 +1,11 @@
 const inquirer = require("inquirer");
 const cTable = require("console.table");
-const { startQs, addEmployeeQs } = require("./questions.js");
+const {
+  startQs,
+  addEmployeeQs,
+  addRoleQs,
+  addDepartmentQs,
+} = require("./questions.js");
 
 async function askQ(db) {
   inquirer
@@ -56,12 +61,13 @@ async function addEmployee(db) {
     let [rows] = await db.query(
       `SELECT employee_role.id, employee_role.title FROM employee_role WHERE employee_role.title ="${answer.role}"`
     );
-    // let addEmployee = await db.query(
-    //   `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${
-    //     answer.fname
-    //   }", "${answer.lname}", ${parseInt(rows.id)}, null)`
-    // );
+    let addEmployee = await db.query(
+      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${
+        answer.fname
+      }", "${answer.lname}", ${parseInt(rows[0].id)}, null)`
+    );
     console.log(rows);
+    askQ(db);
   });
 }
 
@@ -71,6 +77,20 @@ async function viewRoles(db) {
   );
   console.table("\r", rows);
   askQ(db);
+}
+async function addRole(db) {
+  let roleQs = await inquirer.prompt(addRoleQs).then(async (answer) => {
+    let [rows] = await db.query(
+      `SELECT department.id, department.name FROM department WHERE department.name ="${answer.department}"`
+    );
+    let addRole = await db.query(
+      `INSERT INTO employee_role (title, salary, department_id) VALUES ("${
+        answer.title
+      }", "${answer.salary}", ${parseInt(rows[0].id)})`
+    );
+    console.log(rows);
+    askQ(db);
+  });
 }
 
 async function viewDep(db) {

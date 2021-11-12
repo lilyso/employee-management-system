@@ -11,9 +11,6 @@ async function main() {
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: "employee_db",
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
     },
     console.log(`Connected to the employee_db database.`)
   );
