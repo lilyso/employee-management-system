@@ -4,7 +4,7 @@ const {
   startQs,
   addEmployeeQs,
   addRoleQs,
-  addDepartmentQs,
+  addDepQs,
 } = require("./questions.js");
 
 async function askQ(db) {
@@ -48,6 +48,8 @@ async function askQ(db) {
     });
 }
 
+// View and add employees
+
 async function selectEmployees(db) {
   let [rows] = await db.query(
     "SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, department.name AS department, employee_role.salary, CONCAT(manager.first_name,' ',manager.last_name) AS Manager FROM employee employee LEFT JOIN employee manager ON employee.manager_id = manager.id INNER JOIN employee_role ON employee.role_id=employee_role.id INNER JOIN department ON employee_role.department_id=department.id"
@@ -66,10 +68,12 @@ async function addEmployee(db) {
         answer.fname
       }", "${answer.lname}", ${parseInt(rows[0].id)}, null)`
     );
-    console.log(rows);
+    console.log("Employee has been added");
     askQ(db);
   });
 }
+
+// View and add roles
 
 async function viewRoles(db) {
   let [rows] = await db.query(
@@ -88,15 +92,27 @@ async function addRole(db) {
         answer.title
       }", "${answer.salary}", ${parseInt(rows[0].id)})`
     );
-    console.log(rows);
+    console.log("Role has been added");
     askQ(db);
   });
 }
+
+// View and add departments
 
 async function viewDep(db) {
   let [rows] = await db.query("SELECT * FROM department");
   console.table("\r", rows);
   askQ(db);
+}
+
+async function addDep(db) {
+  let roleQs = await inquirer.prompt(addDepQs).then(async (answer) => {
+    let addDep = await db.query(
+      `INSERT INTO department (name) VALUES ("${answer.department}")`
+    );
+    console.log("Department has been added");
+    askQ(db);
+  });
 }
 
 module.exports = askQ;

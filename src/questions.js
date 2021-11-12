@@ -84,7 +84,7 @@ const addRoleQs = [
   },
 ];
 
-const addDepartmentQs = [
+const addDepQs = [
   {
     name: "department",
     message: "Enter department...",
@@ -92,4 +92,4 @@ const addDepartmentQs = [
   },
 ];
 
-module.exports = { startQs, addEmployeeQs, addRoleQs, addDepartmentQs };
+module.exports = { startQs, addEmployeeQs, addRoleQs, addDepQs };
