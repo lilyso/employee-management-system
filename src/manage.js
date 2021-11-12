@@ -59,15 +59,13 @@ async function selectEmployees(db) {
 }
 
 async function addEmployee(db) {
-  let employeeQs = await inquirer.prompt(addEmployeeQs).then(async (answer) => {
-    let [rows] = await db.query(
-      `SELECT employee_role.id, employee_role.title FROM employee_role WHERE employee_role.title ="${answer.role}"`
-    );
+  let [roles] = await db.query("SELECT id, title FROM employee_role");
+  let getRoleDep = addEmployeeQs(roles);
+  let employeeQs = await inquirer.prompt(getRoleDep).then(async (answer) => {
     let addEmployee = await db.query(
-      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${
-        answer.fname
-      }", "${answer.lname}", ${parseInt(rows[0].id)}, null)`
+      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.fname}", "${answer.lname}", ${answer.role}, null)`
     );
+    console.log(answer);
     console.log("Employee has been added");
     askQ(db);
   });
@@ -83,15 +81,14 @@ async function viewRoles(db) {
   askQ(db);
 }
 async function addRole(db) {
-  let roleQs = await inquirer.prompt(addRoleQs).then(async (answer) => {
-    let [rows] = await db.query(
-      `SELECT department.id, department.name FROM department WHERE department.name ="${answer.department}"`
-    );
+  let [departments] = await db.query("SELECT * FROM department");
+  console.log(departments);
+  let qs = addRoleQs(departments);
+  let roleQs = await inquirer.prompt(qs).then(async (answer) => {
     let addRole = await db.query(
-      `INSERT INTO employee_role (title, salary, department_id) VALUES ("${
-        answer.title
-      }", "${answer.salary}", ${parseInt(rows[0].id)})`
+      `INSERT INTO employee_role (title, salary, department_id) VALUES ("${answer.title}", "${answer.salary}", ${answer.department})`
     );
+    console.log(answer);
     console.log("Role has been added");
     askQ(db);
   });
@@ -106,6 +103,7 @@ async function viewDep(db) {
 }
 
 async function addDep(db) {
+  let [rows] = await db.query("SELECT * FROM department");
   let roleQs = await inquirer.prompt(addDepQs).then(async (answer) => {
     let addDep = await db.query(
       `INSERT INTO department (name) VALUES ("${answer.department}")`
