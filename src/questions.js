@@ -1,5 +1,7 @@
 const colors = require("colors");
 
+// Option questions
+
 const startQs = [
   {
     name: "start",
@@ -18,6 +20,8 @@ const startQs = [
     type: "list",
   },
 ];
+
+// Add new employee questions
 
 const addEmployeeQs = ({ roles, managers }) => [
   {
@@ -69,6 +73,36 @@ const addEmployeeQs = ({ roles, managers }) => [
   },
 ];
 
+// Add update employee role questions
+
+const updateEmpRoleQs = (showEmployees, findNewRole) => [
+  {
+    name: "employee",
+    message: "Please choose an employee to update.",
+    type: "list",
+    choices: () => {
+      const employeeChoices = [];
+      showEmployees.forEach((employee) => {
+        employeeChoices.push({
+          name: employee.first_name + " " + employee.last_name,
+          value: employee.id,
+        });
+      });
+      return employeeChoices;
+    },
+  },
+  {
+    name: "newRole",
+    message: "Pick new role",
+    type: "list",
+    choices: findNewRole.map((newRole) => {
+      return { name: newRole.title, value: newRole.id };
+    }),
+  },
+];
+
+// Add new role questions
+
 const addRoleQs = (departments) => [
   {
     name: "title",
@@ -104,6 +138,8 @@ const addRoleQs = (departments) => [
   },
 ];
 
+// Add new department questions
+
 const addDepQs = [
   {
     name: "department",
@@ -119,4 +155,10 @@ const addDepQs = [
   },
 ];
 
-module.exports = { startQs, addEmployeeQs, addRoleQs, addDepQs };
+module.exports = {
+  startQs,
+  addEmployeeQs,
+  addRoleQs,
+  addDepQs,
+  updateEmpRoleQs,
+};

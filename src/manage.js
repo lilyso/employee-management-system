@@ -5,6 +5,7 @@ const {
   addEmployeeQs,
   addRoleQs,
   addDepQs,
+  updateEmpRoleQs,
 } = require("./questions.js");
 
 async function askQ(db) {
@@ -20,7 +21,7 @@ async function askQ(db) {
           addEmployee(db);
           break;
         case "Update Employee Role":
-          updateEmployee(db);
+          updateEmployeeRole(db);
           break;
         case "View all Roles":
           viewRoles(db);
@@ -35,20 +36,19 @@ async function askQ(db) {
           addDep(db);
           break;
         case "Quit":
-          prompts.complete();
-          break;
+          return;
       }
     })
     .catch((error) => {
       if (error.isTtyError) {
-        console.log("error");
+        console.log("Your console environment is not supported!");
       } else {
-        console.log("Something else went wrong");
+        console.log(error);
       }
     });
 }
 
-// View and add employees
+// View all employees
 
 async function selectEmployees(db) {
   let [rows] = await db.query(
@@ -57,6 +57,8 @@ async function selectEmployees(db) {
   console.table("\r", rows);
   askQ(db);
 }
+
+// Add employees
 
 async function addEmployee(db) {
   let [roles] = await db.query("SELECT id, title FROM employee_role");
@@ -74,7 +76,23 @@ async function addEmployee(db) {
   });
 }
 
-// View and add roles
+// Update employee role
+
+async function updateEmployeeRole(db) {
+  let [showEmployees] = await db.query("SELECT * FROM employee");
+  let [findNewRole] = await db.query("SELECT * FROM employee_role");
+  let updateRoleQs = updateEmpRoleQs(showEmployees, findNewRole);
+  let roleQs = await inquirer.prompt(updateRoleQs).then(async (answer) => {
+    let updateRole = await db.query(
+      `UPDATE employee SET employee.role_id = ${answer.newRole} WHERE employee.id = ${answer.employee}`
+    );
+    console.log(answer);
+    console.log(`Role has been updated`);
+    askQ(db);
+  });
+}
+
+// View all roles
 
 async function viewRoles(db) {
   let [rows] = await db.query(
@@ -83,6 +101,9 @@ async function viewRoles(db) {
   console.table("\r", rows);
   askQ(db);
 }
+
+// Add roles
+
 async function addRole(db) {
   let [departments] = await db.query("SELECT * FROM department");
   console.log(departments);
@@ -97,13 +118,15 @@ async function addRole(db) {
   });
 }
 
-// View and add departments
+// View all departments
 
 async function viewDep(db) {
   let [rows] = await db.query("SELECT * FROM department");
   console.table("\r", rows);
   askQ(db);
 }
+
+// Add department
 
 async function addDep(db) {
   let [rows] = await db.query("SELECT * FROM department");

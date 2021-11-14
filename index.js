@@ -12,7 +12,12 @@ async function main() {
       password: process.env.DB_PASS,
       database: "employee_db",
     },
-    console.log(`Connected to the employee_db database.`)
+    console.log(`\nConnected to the employee_db database.\n`),
+    console.log(`********************************`),
+    console.log(`*                              *`),
+    console.log(`*  EMPLOYEE MANAGEMENT SYSTEM  *`),
+    console.log(`*                              *`),
+    console.log(`********************************\n`)
   );
   const promisePool = db.promise();
   await manage(promisePool);
