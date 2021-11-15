@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const colors = require("colors");
 const cTable = require("console.table");
 const {
   startQs,
@@ -50,12 +51,13 @@ async function askQ(db) {
           deleteDep(db);
           break;
         case "Quit":
+          console.log(colors.cyan("\nBye\n"));
           return;
       }
     })
     .catch((error) => {
       if (error.isTtyError) {
-        console.log("Your console environment is not supported!");
+        console.log(colors.red("Your console environment is not supported!"));
       } else {
         console.log(error);
       }
@@ -65,10 +67,10 @@ async function askQ(db) {
 // View all employees
 
 async function selectEmployees(db) {
-  let [rows] = await db.query(
-    "SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, department.name AS department, employee_role.salary, CONCAT(manager.first_name,' ',manager.last_name) AS Manager FROM employee employee LEFT JOIN employee manager ON employee.manager_id = manager.id INNER JOIN employee_role ON employee.role_id=employee_role.id INNER JOIN department ON employee_role.department_id=department.id"
+  let [allEmployees] = await db.query(
+    "SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, department.name AS department, employee_role.salary, CONCAT(manager.first_name,' ',manager.last_name) AS Manager FROM employee employee LEFT JOIN employee manager ON employee.manager_id = manager.id INNER JOIN employee_role ON employee.role_id=employee_role.id INNER JOIN department ON employee_role.department_id=department.id ORDER By last_name"
   );
-  console.table("\r", rows);
+  console.table("\r", allEmployees);
   askQ(db);
 }
 
@@ -85,7 +87,7 @@ async function addEmployee(db) {
       `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.fname}", "${answer.lname}", ${answer.role}, ${answer.manager})`
     );
     console.log(managers);
-    console.log("Employee has been added");
+    console.log(colors.green("\nEmployee has been added\n"));
     askQ(db);
   });
 }
@@ -101,7 +103,7 @@ async function updateEmployeeRole(db) {
       `UPDATE employee SET employee.role_id = ${answer.newRole} WHERE employee.id = ${answer.employee}`
     );
     console.log(answer);
-    console.log(`Role has been updated`);
+    console.log(colors.green("\nRole has been updated\n"));
     askQ(db);
   });
 }
@@ -115,7 +117,7 @@ async function deleteEmployee(db) {
     let deleteEmpNow = await db.query(
       `DELETE FROM employee WHERE ${answer.employees} = employee.id`
     );
-    console.log(`Employee has been deleted`);
+    console.log(colors.yellow("\nEmployee has been deleted\n"));
     askQ(db);
   });
 }
@@ -123,10 +125,10 @@ async function deleteEmployee(db) {
 // View all roles
 
 async function viewRoles(db) {
-  let [rows] = await db.query(
+  let [allRoles] = await db.query(
     "SELECT employee_role.id, employee_role.title,department.name, employee_role.salary FROM employee_role INNER JOIN department ON employee_role.department_id = department.id"
   );
-  console.table("\r", rows);
+  console.table("\r", allRoles);
   askQ(db);
 }
 
@@ -140,7 +142,7 @@ async function addRole(db) {
       `INSERT INTO employee_role (title, salary, department_id) VALUES ("${answer.title}", "${answer.salary}", ${answer.department})`
     );
     console.log(answer);
-    console.log("Role has been added");
+    console.log(colors.green("\nRole has been added\n"));
     askQ(db);
   });
 }
@@ -154,7 +156,7 @@ async function deleteRole(db) {
     let deleteRoleNow = await db.query(
       `DELETE FROM employee_role WHERE ${answer.roles} = employee_role.id`
     );
-    console.log("Role has been deleted");
+    console.log(colors.yellow("\nRole has been deleted\n"));
     askQ(db);
   });
 }
@@ -162,8 +164,8 @@ async function deleteRole(db) {
 // View all departments
 
 async function viewDep(db) {
-  let [rows] = await db.query("SELECT * FROM department");
-  console.table("\r", rows);
+  let [allDep] = await db.query("SELECT * FROM department");
+  console.table("\r", allDep);
   askQ(db);
 }
 
@@ -175,7 +177,7 @@ async function addDep(db) {
     let addNewDep = await db.query(
       `INSERT INTO department (name) VALUES ("${answer.department}")`
     );
-    console.log("Department has been added");
+    console.log(colors.green("\nDepartment has been added\n"));
     askQ(db);
   });
 }
@@ -189,7 +191,7 @@ async function deleteDep(db) {
     let deleteDepNow = await db.query(
       `DELETE FROM department WHERE department.id = ${answer.department}`
     );
-    console.log("Department has been deleted");
+    console.log(colors.yello("\nDepartment has been deleted\n"));
     askQ(db);
   });
 }

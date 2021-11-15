@@ -1,4 +1,5 @@
 require("dotenv").config();
+const colors = require("colors");
 const cTable = require("console.table");
 const manage = require("./src/manage.js");
 
@@ -12,12 +13,12 @@ async function main() {
       password: process.env.DB_PASS,
       database: "employee_db",
     },
-    console.log(`\nConnected to the employee_db database.\n`),
-    console.log(`********************************`),
-    console.log(`*                              *`),
-    console.log(`*  EMPLOYEE MANAGEMENT SYSTEM  *`),
-    console.log(`*                              *`),
-    console.log(`********************************\n`)
+    console.log("\nConnected to the employee_db database.\n"),
+    console.log(colors.blue("********************************")),
+    console.log(colors.blue("*                              *")),
+    console.log(colors.blue("*  EMPLOYEE MANAGEMENT SYSTEM  *")),
+    console.log(colors.blue("*                              *")),
+    console.log(colors.blue("********************************\n"))
   );
   const promisePool = db.promise();
   await manage(promisePool);
