@@ -18,10 +18,15 @@
 
 ## General Information
 
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
+> USER STORY
+>
+> AS A business owner
+>
+> I WANT to be able to view and manage the departments, roles, and employees in my company
+>
+> SO THAT I can organize and plan my business
+
+The Employee Management System is a command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL. The user has the ability to view, add and delete employees, employee roles and departments.
 
 ## Technologies Used
 
