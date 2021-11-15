@@ -10,6 +10,7 @@ const startQs = [
       "View all Employees",
       "Add new Employee",
       "Update Employee Role",
+      "Delete Employee",
       "View all Roles",
       "Add Role",
       "Delete Role",

@@ -3,6 +3,7 @@ const cTable = require("console.table");
 const {
   startQs,
   addEmployeeQs,
+  deleteEmployeeQs,
   addRoleQs,
   deleteRoleQs,
   addDepQs,
@@ -109,7 +110,7 @@ async function updateEmployeeRole(db) {
 
 async function deleteEmployee(db) {
   let [findEmployees] = await db.query("SELECT * FROM employee");
-  let delEmpQs = updateEmpRoleQs(findEmployees);
+  let delEmpQs = deleteEmployeeQs(findEmployees);
   let roleQs = await inquirer.prompt(delEmpQs).then(async (answer) => {
     let deleteEmpNow = await db.query(
       `DELETE FROM employee WHERE ${answer.employees} = employee.id`
