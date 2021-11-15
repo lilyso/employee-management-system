@@ -1,7 +1,7 @@
 # Employee Management System
 
 > A command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL.
-> Demo [_here_](https://www.example.com).
+> Demo [_here_](https://watch.screencastify.com/v/3MM6CRkllbRu4W4WW9wU).
 
 ## Table of Contents
 
@@ -52,6 +52,7 @@ The Employee Management System is a command-line application to manage a company
 ## Screenshots
 
 ![Employee Management System Screenshot](src/assets/images/employee-database-screenshot.png)
+![Employee Management System Screenshot](src/assets/images/employee-management-system-example2.png)
 
 ## Setup
 
