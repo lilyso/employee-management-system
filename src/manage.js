@@ -10,6 +10,7 @@ const {
   addDepQs,
   updateEmpRoleQs,
   deleteDepQs,
+  viewBudgetQs,
 } = require("./questions.js");
 
 // Manage employees questions
@@ -49,6 +50,9 @@ async function askQ(db) {
         case "Delete Department":
           deleteDep(db);
           break;
+        case "View Department Budget":
+          viewDepBudget(db);
+          break;
         case "Quit":
           console.log(colors.cyan("\nBye\n"));
           return;
@@ -79,7 +83,7 @@ async function selectEmployees(db) {
   }
 }
 
-// Add employees
+// Add employee
 
 async function addEmployee(db) {
   try {
@@ -247,6 +251,28 @@ async function deleteDep(db) {
   } catch (error) {
     console.log(
       colors.red(`\nAn error has occurred deleting department - ${error}\n`)
+    );
+  }
+}
+
+// View department budgets
+
+async function viewDepBudget(db) {
+  try {
+    let [departments] = await db.query("SELECT * FROM department");
+    let depB = viewBudgetQs(departments);
+    let findDep = await inquirer.prompt(depB).then(async (answer) => {
+      let [depBudget] = await db.query(
+        `SELECT department_id, SUM(salary) AS Budget FROM employee_role WHERE department_id = ${answer.department}`
+      );
+      console.table("\r", depBudget);
+      askQ(db);
+    });
+  } catch (error) {
+    console.log(
+      colors.red(
+        `\nAn error has occurred selecting department budget - ${error}\n`
+      )
     );
   }
 }

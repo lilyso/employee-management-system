@@ -17,6 +17,7 @@ const startQs = [
       "View all Departments",
       "Add Department",
       "Delete Department",
+      "View Department Budget",
       "Quit",
     ],
     loop: true,
@@ -198,6 +199,17 @@ const deleteDepQs = (departments) => [
   },
 ];
 
+const viewBudgetQs = (departments) => [
+  {
+    name: "department",
+    message: "Choose a department to view budget",
+    type: "list",
+    choices: departments.map((department) => {
+      return { name: department.name, value: department.id };
+    }),
+  },
+];
+
 module.exports = {
   startQs,
   addEmployeeQs,
@@ -207,4 +219,5 @@ module.exports = {
   updateEmpRoleQs,
   deleteDepQs,
   deleteEmployeeQs,
+  viewBudgetQs,
 };
