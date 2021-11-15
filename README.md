@@ -46,6 +46,7 @@ The Employee Management System is a command-line application to manage a company
 - View, add, delete and update employees
 - View, add and delete employee roles
 - View, add and delete departments
+- View budget by department
 
 ## Screenshots
 

@@ -263,7 +263,7 @@ async function viewDepBudget(db) {
     let depB = viewBudgetQs(departments);
     let findDep = await inquirer.prompt(depB).then(async (answer) => {
       let [depBudget] = await db.query(
-        `SELECT department_id, SUM(salary) AS Budget FROM employee_role WHERE department_id = ${answer.department}`
+        `SELECT employee_role.department_id, SUM(employee_role.salary) AS Budget FROM employee JOIN employee_role ON employee.role_id = employee_role.id WHERE employee_role.department_id = ${answer.department} GROUP BY employee_role.department_id`
       );
       console.table("\r", depBudget);
       askQ(db);
