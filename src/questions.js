@@ -12,8 +12,10 @@ const startQs = [
       "Update Employee Role",
       "View all Roles",
       "Add Role",
+      "Delete Role",
       "View all Departments",
       "Add Department",
+      "Delete Department",
       "Quit",
     ],
     loop: true,
@@ -73,7 +75,7 @@ const addEmployeeQs = ({ roles, managers }) => [
   },
 ];
 
-// Add update employee role questions
+// Update employee role questions
 
 const updateEmpRoleQs = (showEmployees, findNewRole) => [
   {
@@ -97,6 +99,22 @@ const updateEmpRoleQs = (showEmployees, findNewRole) => [
     type: "list",
     choices: findNewRole.map((newRole) => {
       return { name: newRole.title, value: newRole.id };
+    }),
+  },
+];
+
+// Delete employee
+
+const deleteEmployeeQs = (findEmployees) => [
+  {
+    name: "employees",
+    message: "Which employee would you like to delete?",
+    type: "list",
+    choices: findEmployees.map((employee) => {
+      return {
+        name: employee.first_name + " " + employee.last_name,
+        value: employee.id,
+      };
     }),
   },
 ];
@@ -138,6 +156,19 @@ const addRoleQs = (departments) => [
   },
 ];
 
+// Delete role
+
+const deleteRoleQs = (findRoles) => [
+  {
+    name: "roles",
+    message: "Which role would you like to delete?",
+    type: "list",
+    choices: findRoles.map((role) => {
+      return { name: role.title, value: role.id };
+    }),
+  },
+];
+
 // Add new department questions
 
 const addDepQs = [
@@ -155,10 +186,24 @@ const addDepQs = [
   },
 ];
 
+const deleteDepQs = (departments) => [
+  {
+    name: "department",
+    message: "Which department would you like to delete?",
+    type: "list",
+    choices: departments.map((department) => {
+      return { name: department.name, value: department.id };
+    }),
+  },
+];
+
 module.exports = {
   startQs,
   addEmployeeQs,
   addRoleQs,
+  deleteRoleQs,
   addDepQs,
   updateEmpRoleQs,
+  deleteDepQs,
+  deleteEmployeeQs,
 };

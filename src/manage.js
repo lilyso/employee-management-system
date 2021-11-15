@@ -4,9 +4,13 @@ const {
   startQs,
   addEmployeeQs,
   addRoleQs,
+  deleteRoleQs,
   addDepQs,
   updateEmpRoleQs,
+  deleteDepQs,
 } = require("./questions.js");
+
+// Manage employees questions
 
 async function askQ(db) {
   inquirer
@@ -23,17 +27,26 @@ async function askQ(db) {
         case "Update Employee Role":
           updateEmployeeRole(db);
           break;
+        case "Delete Employee":
+          deleteEmployee(db);
+          break;
         case "View all Roles":
           viewRoles(db);
           break;
         case "Add Role":
           addRole(db);
           break;
+        case "Delete Role":
+          deleteRole(db);
+          break;
         case "View all Departments":
           viewDep(db);
           break;
         case "Add Department":
           addDep(db);
+          break;
+        case "Delete Department":
+          deleteDep(db);
           break;
         case "Quit":
           return;
@@ -92,6 +105,20 @@ async function updateEmployeeRole(db) {
   });
 }
 
+// Delete employee
+
+async function deleteEmployee(db) {
+  let [findEmployees] = await db.query("SELECT * FROM employee");
+  let delEmpQs = updateEmpRoleQs(findEmployees);
+  let roleQs = await inquirer.prompt(delEmpQs).then(async (answer) => {
+    let deleteEmpNow = await db.query(
+      `DELETE FROM employee WHERE ${answer.employees} = employee.id`
+    );
+    console.log(`Employee has been deleted`);
+    askQ(db);
+  });
+}
+
 // View all roles
 
 async function viewRoles(db) {
@@ -106,7 +133,6 @@ async function viewRoles(db) {
 
 async function addRole(db) {
   let [departments] = await db.query("SELECT * FROM department");
-  console.log(departments);
   let qs = addRoleQs(departments);
   let roleQs = await inquirer.prompt(qs).then(async (answer) => {
     let addRole = await db.query(
@@ -114,6 +140,20 @@ async function addRole(db) {
     );
     console.log(answer);
     console.log("Role has been added");
+    askQ(db);
+  });
+}
+
+// Delete Role
+
+async function deleteRole(db) {
+  let [findRoles] = await db.query("SELECT * FROM employee_role");
+  let eq = deleteRoleQs(findRoles);
+  let findRoleQs = await inquirer.prompt(eq).then(async (answer) => {
+    let deleteRoleNow = await db.query(
+      `DELETE FROM employee_role WHERE ${answer.roles} = employee_role.id`
+    );
+    console.log("Role has been deleted");
     askQ(db);
   });
 }
@@ -130,11 +170,25 @@ async function viewDep(db) {
 
 async function addDep(db) {
   let [rows] = await db.query("SELECT * FROM department");
-  let roleQs = await inquirer.prompt(addDepQs).then(async (answer) => {
-    let addDep = await db.query(
+  let addNewDepQs = await inquirer.prompt(addDepQs).then(async (answer) => {
+    let addNewDep = await db.query(
       `INSERT INTO department (name) VALUES ("${answer.department}")`
     );
     console.log("Department has been added");
+    askQ(db);
+  });
+}
+
+// Delete department
+
+async function deleteDep(db) {
+  let [departments] = await db.query("SELECT * FROM department");
+  let dq = deleteDepQs(departments);
+  let deleteDep = await inquirer.prompt(dq).then(async (answer) => {
+    let deleteDepNow = await db.query(
+      `DELETE FROM department WHERE department.id = ${answer.department}`
+    );
+    console.log("Department has been deleted");
     askQ(db);
   });
 }
