@@ -11,6 +11,7 @@ const {
   updateEmpRoleQs,
   deleteDepQs,
   viewBudgetQs,
+  viewEmplDepQs,
 } = require("./questions.js");
 
 // Manage employees questions
@@ -52,6 +53,9 @@ async function askQ(db) {
           break;
         case "View Department Budget":
           viewDepBudget(db);
+          break;
+        case "View Employees by Department":
+          viewEmpByDep(db);
           break;
         case "Quit":
           console.log(colors.cyan("\nBye\n"));
@@ -272,6 +276,28 @@ async function viewDepBudget(db) {
     console.log(
       colors.red(
         `\nAn error has occurred selecting department budget - ${error}\n`
+      )
+    );
+  }
+}
+
+// View employees by department
+
+async function viewEmpByDep(db) {
+  try {
+    let [departments] = await db.query("SELECT * FROM department");
+    let vbd = viewEmplDepQs(departments);
+    let findEmpDep = await inquirer.prompt(vbd).then(async (answer) => {
+      let [EmpByDep] = await db.query(
+        `SELECT employee.first_name, employee.last_name, employee_role.title, employee_role.salary FROM employee JOIN employee_role ON employee.role_id = employee_role.id WHERE employee_role.department_id = ${answer.department}`
+      );
+      console.table("\r", EmpByDep);
+      askQ(db);
+    });
+  } catch (error) {
+    console.log(
+      colors.red(
+        `\nAn error has occurred selecting employees by department - ${error}\n`
       )
     );
   }

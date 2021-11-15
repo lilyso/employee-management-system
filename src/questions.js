@@ -18,6 +18,7 @@ const startQs = [
       "Add Department",
       "Delete Department",
       "View Department Budget",
+      "View Employees by Department",
       "Quit",
     ],
     loop: true,
@@ -188,6 +189,8 @@ const addDepQs = [
   },
 ];
 
+// Delete department questions
+
 const deleteDepQs = (departments) => [
   {
     name: "department",
@@ -199,10 +202,25 @@ const deleteDepQs = (departments) => [
   },
 ];
 
+// View department budget questions
+
 const viewBudgetQs = (departments) => [
   {
     name: "department",
     message: "Choose a department to view budget",
+    type: "list",
+    choices: departments.map((department) => {
+      return { name: department.name, value: department.id };
+    }),
+  },
+];
+
+// Add employees by department questions
+
+const viewEmplDepQs = (departments) => [
+  {
+    name: "department",
+    message: "Choose a department to view employees",
     type: "list",
     choices: departments.map((department) => {
       return { name: department.name, value: department.id };
@@ -220,4 +238,5 @@ module.exports = {
   deleteDepQs,
   deleteEmployeeQs,
   viewBudgetQs,
+  viewEmplDepQs,
 };
