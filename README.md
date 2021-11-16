@@ -103,8 +103,6 @@ Room for improvement:
 
 - Ability to filter employees by manager.
 - Ability to update employees by manager.
-- Ability to view employees by department.
-- Ability to view the total utilised budget of a department—in other words, the combined salaries of all employees in that department.
 
 ## Contact
 
